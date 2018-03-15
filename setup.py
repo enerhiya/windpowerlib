@@ -14,7 +14,4 @@ setup(name='windpowerlib',
       zip_safe=False,
       install_requires=['numpy >= 1.7.0',
                         'pandas >= 0.13.1'],
-      setup_requires=['pytest-runner'],
-      tests_require=['sphinx',
-                     'jupyter',
-                     'pytest'])
+      extras_require={'test': ['sphinx', 'jupyter', 'pytest']})
