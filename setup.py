@@ -13,4 +13,7 @@ setup(name='windpowerlib',
           'windpowerlib': [os.path.join('data', '*.csv')]},
       zip_safe=False,
       install_requires=['numpy >= 1.7.0',
-                        'pandas >= 0.13.1'])
+                        'pandas >= 0.13.1'],
+      tests_require=['sphinx',
+                     'jupyter',
+                     'pytest'])
