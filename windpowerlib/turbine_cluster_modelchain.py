@@ -46,6 +46,12 @@ class TurbineClusterModelChain(ModelChain):
         Defines when the smoothing takes place if `smoothing` is True. Options:
         'turbine_power_curves' (to the single turbine power curves),
         'wind_farm_power_curves'. Default: 'wind_farm_power_curves'.
+    installed_power : float
+        The installed power of the wind farm. Can be set directly or calculated
+        from the wind turbines' or wind farms' installed power by using
+        :py:func:`~.wind_farm.WindFarm.get_installed_power`. Default: None.
+        Note: If float the wind farm or turbine cluster power curve will be
+        scaled to this installed power.
 
     Other Parameters
     ----------------
@@ -104,10 +110,16 @@ class TurbineClusterModelChain(ModelChain):
         Defines when the smoothing takes place if `smoothing` is True. Options:
         'turbine_power_curves' (to the single turbine power curves),
         'wind_farm_power_curves'. Default: 'wind_farm_power_curves'.
+    installed_power : float
+        The installed power of the wind farm. Can be set directly or calculated
+        from the wind turbines' or wind farms' installed power by using
+        :py:func:`~.wind_farm.WindFarm.get_installed_power`. Default: None.
+        Note: If float the wind farm or turbine cluster power curve will be
+        scaled to this installed power.
+    power_curve : pandas.DataFrame or None
+        The calculated power curve of the wind farm.
     power_output : pandas.Series
         Electrical power output of the wind turbine in W.
-    pandas.DataFrame or None
-        The calculated power curve of the wind farm.
     wind_speed_model : string
         Parameter to define which model to use to calculate the wind speed
         at hub height. Valid options are 'logarithmic', 'hellman' and
@@ -139,7 +151,8 @@ class TurbineClusterModelChain(ModelChain):
     def __init__(self, power_plant, wake_losses_model='dena_mean',
                  smoothing=False, block_width=0.5,
                  standard_deviation_method='turbulence_intensity',
-                 smoothing_order='wind_farm_power_curves', **kwargs):
+                 smoothing_order='wind_farm_power_curves',
+                 installed_power=None, **kwargs):
         super(TurbineClusterModelChain, self).__init__(power_plant, **kwargs)
 
         self.power_plant = power_plant
@@ -148,6 +161,7 @@ class TurbineClusterModelChain(ModelChain):
         self.block_width = block_width
         self.standard_deviation_method = standard_deviation_method
         self.smoothing_order = smoothing_order
+        self.installed_power = installed_power
 
         self.power_curve = None
         self.power_output = None
@@ -159,7 +173,8 @@ class TurbineClusterModelChain(ModelChain):
         The power curve is aggregated from the wind farms' and wind turbines'
         power curves by using :func:`power_plant.assign_power_curve`. Depending
         on the parameters of the WindTurbineCluster power curves are smoothed
-        and/or wake losses are taken into account.
+        and/or wake losses are taken into account. The power curves are scaled
+        to the wind farm's installed capacity if given.
 
         Parameters
         ----------
@@ -209,6 +224,10 @@ class TurbineClusterModelChain(ModelChain):
             smoothing_order=self.smoothing_order,
             roughness_length=weather_df['roughness_length'][0].mean(),
             turbulence_intensity=turbulence_intensity)
+        if self.installed_power is not None:
+            self.power_plant.installed_power = self.installed_power
+            scale_power_curve(self.power_plant.power_curve,
+                              self.power_plant.installed_power)
         # Further logging messages
         if self.smoothing is None:
             logging.debug('Aggregated power curve not smoothed.')
