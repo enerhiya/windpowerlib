@@ -298,3 +298,33 @@ class WindFarm(object):
                     wind_farm_efficiency=self.efficiency))
         self.power_curve = wind_farm_power_curve
         return self
+
+    def scale_power_curve(self):  # todo: this function needed in wind_turbine_cluster  - is the same? inheritance?
+        r"""
+        Scales the wind farm power curve to the installed capacity.
+
+        The wind farm power curve is first normalized and then scaled to the
+        wind farm's capacity. This is useful if the installed capacity of a
+        region is known but not the exact turbine types are being used.
+
+        Returns
+        -------
+        self
+
+        """
+        # power curve and installed capacity needed
+        if self.power_curve is None:
+            raise ValueError("'power_curve' of {} is {} but should be ".format(
+                self.name, self.power_curve) +
+                             "a pandas.DataFrame for scaling it.")
+        if self.installed_power is None:
+            raise ValueError("'installed_power' of {} is {} but ".format(
+                self.name, self.installed_power) +
+                             "float for scaling a power curve.")
+        # normalize power curve by installed power of wind turbine types
+        self.power_curve['value'] = self.power_curve['value'].div(
+            self.get_installed_power())
+        # scale power curve to installed power of wind farm
+        self.power_curve['value'] = (self.power_curve['value'] *
+                                     self.installed_power)
+        return self
