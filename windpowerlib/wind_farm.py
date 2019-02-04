@@ -53,13 +53,15 @@ class WindFarm(object):
         columns/keys with wind speeds in m/s and the corresponding
         dimensionless wind farm efficiency. Default: None.
     hub_height : float
-        The calculated mean hub height of the wind farm.
+        The calculated mean hub height of the wind farm. Default: None.
     installed_power : float
-        The calculated installed power of the wind farm.
+        The installed power of the wind farm. Can be set directly or calculated
+        from the wind turbines' installed power by using
+        :py:func:`~.wind_farm.WindFarm.get_installed_power`. Default: None.
     power_curve : pandas.DataFrame or None
-        The calculated power curve of the wind farm.
+        The calculated power curve of the wind farm. Default: None.
     power_output : pandas.Series
-        The calculated power output of the wind farm.
+        The calculated power output of the wind farm. Default: None.
 
     Examples
     --------

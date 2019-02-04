@@ -40,12 +40,16 @@ class WindTurbineCluster(object):
         weather data. Default: None.
     hub_height : float
         The calculated average hub height of the wind turbine cluster.
+        Default: None.
     installed_power : float
-        The calculated installed power of the wind turbine cluster.
+        The installed power of the wind farm. Can be set directly or calculated
+        from the wind turbines' installed power by using
+        :py:func:`~.wind_turbine_cluster.WindTurbineCluster.get_installed_power`.
+        Default: None.
     power_curve : pandas.DataFrame or None
-        The calculated power curve of the wind turbine cluster.
+        The calculated power curve of the wind turbine cluster. Default: None.
     power_output : pandas.Series
-        The calculated power output of the wind turbine cluster.
+        The calculated power output of the wind turbine cluster. Default: None.
 
     """
     def __init__(self, name, wind_farms, coordinates=None):
