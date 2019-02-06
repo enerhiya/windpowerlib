@@ -301,7 +301,7 @@ class WindFarm(object):
         self.power_curve = wind_farm_power_curve
         return self
 
-    def scale_power_curve(self):  # todo: this function needed in wind_turbine_cluster  - is the same? inheritance?
+    def scale_power_curve(self):
         r"""
         Scales the wind farm power curve to the installed capacity.
 
@@ -314,6 +314,9 @@ class WindFarm(object):
         self
 
         """
+        # todo: this function should be put in tools model and used in
+        #  wind_farm and in wind_turbine_cluster
+        # todo: add tests
         # power curve and installed capacity needed
         if self.power_curve is None:
             raise ValueError("'power_curve' of {} is {} but should be ".format(

@@ -226,8 +226,7 @@ class TurbineClusterModelChain(ModelChain):
             turbulence_intensity=turbulence_intensity)
         if self.installed_power is not None:
             self.power_plant.installed_power = self.installed_power
-            scale_power_curve(self.power_plant.power_curve,
-                              self.power_plant.installed_power)
+            self.power_plant.scale_power_curve()
         # Further logging messages
         if self.smoothing is None:
             logging.debug('Aggregated power curve not smoothed.')

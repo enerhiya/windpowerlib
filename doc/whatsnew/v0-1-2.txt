@@ -4,7 +4,8 @@ v0.1.2 ()
 
 New functions
 #############
-
+* :py:func:`~windpowerlib.wind_farm.WindFarm.scale_power_curve` and :py:func:`~windpowerlib.wind_turbine_cluster.WindTurbineCluster.scale_power_curve` for scaling power curves via the installed capacity.
+TODO: add to documentation
 
 
 Testing
@@ -29,5 +30,5 @@ Other changes
 
 Contributors
 ############
-
+* Sabine Haas
 
